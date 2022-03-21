@@ -6,4 +6,4 @@ This is an E-commerce API
 3) write the command `npm i` to install all the dependencies.
 4) application run on port `3333`
 5) to start the project write `npm start`.
-6) see the API documentation for better clearance https://documenter.getpostman.com/view/15203815/UVsQrPQF.
+6) to use the API see documentation https://documenter.getpostman.com/view/15203815/UVsQrPQF.
