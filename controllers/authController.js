@@ -27,7 +27,7 @@ exports.signup = catchAsync(async (req, res, next) => {
 
 exports.protect = async (req, res, next) => {
   let token;
-  console.log(req.cookies);
+
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
@@ -54,7 +54,7 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!username || !password)
     return next(new appError(`Please provide username & password`, 404));
   const user = await userModel.findOne({ username }).select("+password");
-  console.log(username);
+
   if (!user || !(await user.checkCorrectPassword(password, user.password))) {
     return next(new appError(`wrong username or password!!!`, 404));
   }
@@ -79,7 +79,6 @@ exports.login = catchAsync(async (req, res, next) => {
 
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
-    console.log(roles, req.user);
     if (!roles.includes(req.user.role)) {
       return next(
         new appError(

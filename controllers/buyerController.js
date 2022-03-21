@@ -31,7 +31,6 @@ exports.createOrder = catchAsync(async (req, res, next) => {
     orderedBy: req.user.id,
     orderedTo: req.params.seller_id,
   });
-  console.log(order);
   order = await orderModel.populate(order, {
     path: "orderedTo",
     select: "username",
