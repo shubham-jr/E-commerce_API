@@ -10,6 +10,14 @@ exports.signup = catchAsync(async (req, res, next) => {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
   user.password = undefined;
+  const options = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+    ),
+    // secure:true,
+    httpOnly: true,
+  };
+  res.cookie("jwt", token, options);
   res.status(201).json({
     status: "success",
     token,
@@ -18,13 +26,15 @@ exports.signup = catchAsync(async (req, res, next) => {
 });
 
 exports.protect = async (req, res, next) => {
-  // check if token exists
   let token;
+  console.log(req.cookies);
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
   ) {
     token = req.headers.authorization.split(" ")[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
   } else {
     return next(new appError(`You are not loggedIn :(  Please Login!!`, 404));
   }
@@ -51,6 +61,14 @@ exports.login = catchAsync(async (req, res, next) => {
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
+  const options = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+    ),
+    // secure:true,
+    httpOnly: true,
+  };
+  res.cookie("jwt", token, options);
   user.password = undefined;
   res.status(200).json({
     status: "success",

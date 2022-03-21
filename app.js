@@ -1,6 +1,6 @@
 const app = require("express")();
 const bodyParser = require("body-parser");
-
+const cookie = require("cookie-parser");
 const userRoute = require("./routes/userRoutes");
 const sellerRoute = require("./routes/sellerRoutes");
 const buyerRoute = require("./routes/buyerRoutes");
@@ -9,6 +9,7 @@ const globalErrorHandler = require("./controllers/errorController");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cookie());
 
 app.use("/api/auth", userRoute);
 app.use("/api/seller", sellerRoute);
